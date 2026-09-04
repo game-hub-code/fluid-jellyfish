@@ -15,33 +15,33 @@
 <canvas id="fluid"></canvas>
 <div id="medusa-container"></div>
 
-<!-- fluid background (unchanged from earlier build) -->
-<script src="https://cdn.jsdelivr.net/npm/webgl-fluid@0.4"></script>
+<!-- fluid background: vendored, verified engine (ported from
+     rocksdanister/WebGL-Fluid-Simulation, lively branch) — not the CDN
+     "webgl-fluid" package, which has no keyboard/programmatic splat API
+     at all and was silently ignoring every audio-triggered call before. -->
+<script src="vendor/webgl-fluid-sim.js"></script>
 <script>
-WebGLFluid(document.getElementById('fluid'), {
-  TRIGGER: 'hover',
-  IMMEDIATE: true,
-  SIM_RESOLUTION: 128,
-  DYE_RESOLUTION: 1024,
+// script.js exposes `config`, `updateKeywords`, and `_audioReact` as plain
+// top-level bindings (not on window, but visible to sibling <script> tags
+// in this same document) — safe to read/override here directly.
+Object.assign(config, {
   DENSITY_DISSIPATION: 1.5,
   VELOCITY_DISSIPATION: 0.9,
   SPLAT_RADIUS: 0.3,
   SPLAT_FORCE: 10000,
   CURL: 25,
-  SHADING: true,
-  COLORFUL: false,
-  // Fixed jellyfish-bioluminescence palette (bulb pink -> deep purple),
-  // matching the medusa's own BulbMaterial colors (0xFFA9D2 / 0x70256C)
-  // instead of the library's default random-hue cycling.
-  SPLAT_COLOR: { r: 0.85, g: 0.35, b: 0.75 },
-  BACK_COLOR: { r: 0.02, g: 0.0, b: 0.05 },
-  TRANSPARENT: false,
-  BLOOM: true,
-  BLOOM_INTENSITY: 1,
+  BLOOM_INTENSITY: 0.01,
   SUNRAYS: false
 });
-</script>
-  
+updateKeywords(); // recompile display shader for the SUNRAYS/BLOOM change above
+
+// script.js's own livelyAudioListener silently no-ops unless this is true —
+// normally toggled by a Lively Properties panel checkbox we're not shipping,
+// so it's forced on here instead. This (not the CDN library swap alone) is
+// almost certainly why audio did nothing before: the listener was being
+// called but was gated off internally by default.
+_audioReact = true;
+</script>  
 <!-- real particulate-medusae port: three.js r72 (pinned to match original) -->
 <script src="vendor/three.js"></script>
 <script src="vendor/TrackballControls.js"></script>
