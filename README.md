@@ -17,7 +17,7 @@ render surface and no fullscreen wallpaper behavior on phones.
 Controls:
 - **Drag** — orbit the camera
 - **Click** — nudge the jellyfish
-- **Double-click / double-tap** — swim toward that point, head turns to face it
+- **Double-click / double-tap** — swim toward that point
 - **Scroll / pinch** — zoom
 
 ## Run it locally
