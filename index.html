@@ -41,54 +41,7 @@ WebGLFluid(document.getElementById('fluid'), {
   SUNRAYS: false
 });
 </script>
-  <script>
-(function(){
-  var THRESH=1.4, COOLDOWN=180, avg=0.02, last=0;
-
-  // Path A: Lively system audio (works unattended, zero prompts).
-  // Lively calls this automatically if it finds it in the page —
-  // only fires when the wallpaper is added as .zip/folder with
-  // "Arguments": "--audio" in LivelyInfo.json.
-  window.livelyAudioListener = function(audioArray){
-    var sum=0;
-    for (var i=0;i<audioArray.length;i++) sum += audioArray[i]*audioArray[i];
-    var rms = Math.sqrt(sum/audioArray.length);
-    trigger(rms);
-  };
-
-  // Path B: mic, for the plain-browser GitHub Pages demo where
-  // livelyAudioListener is never called. Needs a user click to grant.
-  if (navigator.mediaDevices) {
-    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})
-      .then(function(stream){
-        var ctx=new (window.AudioContext||window.webkitAudioContext)();
-        var analyser=ctx.createAnalyser(); analyser.fftSize=512;
-        ctx.createMediaStreamSource(stream).connect(analyser);
-        var data=new Uint8Array(analyser.frequencyBinCount);
-        var resume=function(){ if(ctx.state==='suspended') ctx.resume(); };
-        window.addEventListener('pointerdown',resume);
-        window.addEventListener('keydown',resume);
-        resume();
-        (function tick(){
-          analyser.getByteTimeDomainData(data);
-          var sum=0; for(var i=0;i<data.length;i++){ var v=(data[i]-128)/128; sum+=v*v; }
-          trigger(Math.sqrt(sum/data.length));
-          requestAnimationFrame(tick);
-        })();
-      }).catch(function(){});
-  }
-
-  function trigger(rms){
-    avg = avg*0.97 + rms*0.03;
-    var now = performance.now();
-    if (rms > avg*THRESH && rms > 0.05 && now-last > COOLDOWN){
-      last = now;
-      window.dispatchEvent(new KeyboardEvent('keydown',{key:' ',code:'Space'}));
-    }
-  }
-})();
-</script>
-
+  
 <!-- real particulate-medusae port: three.js r72 (pinned to match original) -->
 <script src="vendor/three.js"></script>
 <script src="vendor/TrackballControls.js"></script>
