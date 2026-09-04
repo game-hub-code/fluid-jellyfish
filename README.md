@@ -1,13 +1,43 @@
 # Fluid Jellyfish
 
-Lively Wallpaper package: WebGL fluid simulation background + a soft-body
-jellyfish (ported from `particulate-medusae`). Drag to orbit camera, click
-to nudge, double-click/tap to send the jellyfish swimming toward that point.
+WebGL fluid simulation background + a soft-body jellyfish (ported from
+`particulate-medusae`). Drag to orbit camera, click to nudge, double-click/
+tap to send the jellyfish swimming toward that exact point — its head turns
+to face where you clicked.
 
-## Install
+## Try it in the browser
+
+**Live demo:** https://game-hub-code.github.io/fluid-jellyfish/
+
+Requires a WebGL-capable desktop browser (Chrome, Firefox, Edge, Safari).
+No install — just open the link. Mobile/touch works for drag-orbit and tap,
+but this was built and tuned as a desktop wallpaper, so expect a smaller
+render surface and no fullscreen wallpaper behavior on phones.
+
+Controls:
+- **Drag** — orbit the camera
+- **Click** — nudge the jellyfish
+- **Double-click / double-tap** — swim toward that point, head turns to face it
+- **Scroll / pinch** — zoom
+
+## Run it locally
+
+No build step — it's static files.
+
+```bash
+git clone https://github.com/game-hub-code/fluid-jellyfish.git
+cd fluid-jellyfish
+python3 -m http.server 8000
+# open http://localhost:8000
+```
+
+Or just double-click `index.html` (some browsers restrict local `file://`
+WebGL/module loading — the http server above avoids that).
+
+## Install as a Lively Wallpaper (desktop)
 
 Lively Wallpaper -> Add wallpaper (+) -> Browse local file -> select this
-`FluidMedusae` folder.
+`fluid-jellyfish` folder. `LivelyInfo.json` is read automatically.
 
 ## License
 
