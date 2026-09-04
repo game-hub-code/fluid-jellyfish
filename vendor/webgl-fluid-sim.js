@@ -59,6 +59,10 @@ let config = {
   CUSTOM_COLOR: false
 };
 
+// --- Purple theme: hue band for generateColor() (0..1 scale, 0.75 = 270°, 0.83 = ~300°) ---
+const PURPLE_HUE_MIN = 0.75;
+const PURPLE_HUE_MAX = 0.86;
+
 var timer = setInterval(randomSplat, 3500);
 var _runRandom = true;
 var _isSleep = false;
@@ -121,7 +125,7 @@ function multipleSplats(amount) {
 
 let _randomSplats = false;
 let _audioReact = false;
-let colorRange = ["#FF0000","#FF0001"];
+let colorRange = ["#7B2FF7","#C084FC"];
 let colorConfig = null;
 let splatRadiusModulationEnabled = false;
 let baseRadius = config.SPLAT_RADIUS;
@@ -1677,14 +1681,6 @@ function correctRadius(radius) {
   return radius;
 }
 
-// canvas.addEventListener('mousedown', e => {
-//     let posX = scaleByPixelRatio(e.offsetX);
-//     let posY = scaleByPixelRatio(e.offsetY);
-//     let pointer = pointers.find(p => p.id == -1);
-//     if (pointer == null)
-//         pointer = new pointerPrototype();
-//     updatePointerDownData(pointer, -1, posX, posY);
-// });
 let lastMove = -1;
 function checkLastMove() {
   const currentMove = window.performance.now();
@@ -1795,8 +1791,10 @@ function correctDeltaY(delta) {
   return delta;
 }
 
+// --- Purple theme: constrain hue to the purple/violet band instead of full rainbow ---
 function generateColor() {
-  let c = HSVtoRGB(Math.random(), 1.0, 1.0);
+  let hue = PURPLE_HUE_MIN + Math.random() * (PURPLE_HUE_MAX - PURPLE_HUE_MIN);
+  let c = HSVtoRGB(hue, 1.0, 1.0);
   if (!config.CUSTOM_COLOR)
   {
     c.r *= 0.15;
