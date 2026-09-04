@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fluid Medusae</title>
+<style>
+  html, body { margin:0; padding:0; overflow:hidden; background:#000; width:100vw; height:100vh; }
+  canvas { position:absolute; top:0; left:0; width:100vw; height:100vh; }
+  #fluid { z-index: 1; }
+  #medusa-container { position:absolute; top:0; left:0; width:100vw; height:100vh; z-index: 2; }
+  #medusa-container canvas { position:absolute; top:0; left:0; }
+</style>
+</head>
+<body>
+<canvas id="fluid"></canvas>
+<div id="medusa-container"></div>
+
+<!-- fluid background (unchanged from earlier build) -->
+<script src="https://cdn.jsdelivr.net/npm/webgl-fluid@0.4"></script>
+<script>
+WebGLFluid(document.getElementById('fluid'), {
+  TRIGGER: 'hover',
+  IMMEDIATE: true,
+  SIM_RESOLUTION: 128,
+  DYE_RESOLUTION: 1024,
+  DENSITY_DISSIPATION: 1.5,
+  VELOCITY_DISSIPATION: 0.9,
+  SPLAT_RADIUS: 0.3,
+  SPLAT_FORCE: 10000,
+  CURL: 25,
+  SHADING: true,
+  COLORFUL: false,
+  // Fixed jellyfish-bioluminescence palette (bulb pink -> deep purple),
+  // matching the medusa's own BulbMaterial colors (0xFFA9D2 / 0x70256C)
+  // instead of the library's default random-hue cycling.
+  SPLAT_COLOR: { r: 0.85, g: 0.35, b: 0.75 },
+  BACK_COLOR: { r: 0.02, g: 0.0, b: 0.05 },
+  TRANSPARENT: false,
+  BLOOM: true,
+  BLOOM_INTENSITY: 0.01,
+  SUNRAYS: false
+});
+</script>
+
+<!-- real particulate-medusae port: three.js r72 (pinned to match original) -->
+<script src="vendor/three.js"></script>
+<script src="vendor/TrackballControls.js"></script>
+<script src="vendor/EffectComposer.js"></script>
+<script src="vendor/RenderPass.js"></script>
+<script src="vendor/ShaderPass.js"></script>
+<script src="vendor/MaskPass.js"></script>
+<script src="vendor/BloomPass.js"></script>
+<script src="vendor/CopyShader.js"></script>
+<script src="vendor/ConvolutionShader.js"></script>
+<script src="vendor/VignetteShader.js"></script>
+
+<!-- particulate (soft-body physics engine, MIT, jpweeks/particulate on npm) -->
+<script src="vendor/particulate.js"></script>
+<!-- noisejs (josephg/noisejs, pinned commit, for lens-dirt texture) -->
+<script src="vendor/noise.js"></script>
+
+<!-- ported app code (verbatim from particulate-medusae unless noted in-file) -->
+<script src="vendor/medusa-app-core.js"></script>
+<script src="vendor/medusa-shaders.js"></script>
+<script src="vendor/medusa-parts.js"></script>
+<script src="vendor/medusa-item.js"></script>
+<script src="vendor/medusa-scene.js"></script>
+<script src="vendor/medusa-bootstrap.js"></script>
+</body>
+</html>
